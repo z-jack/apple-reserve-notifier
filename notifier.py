@@ -1,3 +1,4 @@
+from copy import deepcopy
 from time import sleep
 import requests
 import inquirer
@@ -63,12 +64,14 @@ def normalize_str(noticeContent: str, info: dict) -> str:
 
 
 def normalize_dict(d: dict, info: dict) -> dict:
+    d = deepcopy(d)
     for key in d.keys():
         d[key] = normalize_anything(d[key], info)
     return d
 
 
 def normalize_list(l: list, info: dict) -> list:
+    l = deepcopy(l)
     for i in range(len(l)):
         l[i] = normalize_anything(l[i], info)
     return l
@@ -125,7 +128,7 @@ while True:
                     if type(noticeContent) is not str:
                         noticeContent = json.dumps(noticeContent)
                     requests.post(notifyMethod, noticeContent, headers={
-                                'Content-Type': config.get('contentType', 'application/json')})
+                        'Content-Type': config.get('contentType', 'application/json')})
         except KeyboardInterrupt:
             exit(0)
     except Exception:
