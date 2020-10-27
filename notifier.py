@@ -116,11 +116,15 @@ while True:
             notifyMethod = config.get('webHookUrl')
             if notifyMethod == 'CLI' or notifyMethod == 'cli' or not notifyMethod:
                 noticeContent = config.get('webHookFormat', '')
-                noticeContent = normalize_str(noticeContent, info)
+                noticeContent = normalize_anything(noticeContent, info)
                 print(noticeContent)
             else:
-                requests.post(notifyMethod, json.dumps(normalize_anything(
-                    config.get('webHookFormat'), info)))
+                noticeContent = normalize_anything(
+                    config.get('webHookFormat'), info)
+                if type(noticeContent) is not str:
+                    noticeContent = json.dumps(noticeContent)
+                requests.post(notifyMethod, noticeContent, headers={
+                              'Content-Type': config.get('contentType', 'application/json')})
     except requests.exceptions.RequestException:
         pass
     sleep(config.get('queryInterval', 10))

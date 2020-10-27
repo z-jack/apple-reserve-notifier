@@ -1,6 +1,7 @@
 {
 	"webHookUrl": "CLI",
 	"webHookFormat": "✨ The product {{ productName }} is now available in {{ storeName }}, {{ city }}. Go to {{ reserveUrl }} to reserve it now!",
+	"contentType": "text/plain",
 	"country": "CN",
 	"language": "zh_CN",
 	"filterCities": ["上海"],

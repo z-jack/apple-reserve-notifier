@@ -16,6 +16,7 @@ Here is an example `config.json`.
 ```JavaScript
 {
 	"webHookUrl": "CLI", // When Using "CLI" mode, the notification will output to console. Otherwise, will make a post request to your set URL
+	"contentType": "text/plain", // the MIME type of post data
 	"webHookFormat": "✨ The product {{ productName }} is now available in {{ storeName }}, {{ city }}. Go to {{ reserveUrl }} to reserve it now!", // The message needed to show, can also be other JSON content
 	// There are some template that will be replaced to real data, use {{}} to told program this is a template
 	// =====
