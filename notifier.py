@@ -108,23 +108,26 @@ for series in selected_series:
     store_information[series] = information
 while True:
     try:
-        loop_stock_result = []
-        for series in selected_series:
-            loop_stock_result += fetch_stock_information(
-                series, store_information[series], selected_products)
-        for info in loop_stock_result:
-            notifyMethod = config.get('webHookUrl')
-            if notifyMethod == 'CLI' or notifyMethod == 'cli' or not notifyMethod:
-                noticeContent = config.get('webHookFormat', '')
-                noticeContent = normalize_anything(noticeContent, info)
-                print(noticeContent)
-            else:
-                noticeContent = normalize_anything(
-                    config.get('webHookFormat'), info)
-                if type(noticeContent) is not str:
-                    noticeContent = json.dumps(noticeContent)
-                requests.post(notifyMethod, noticeContent, headers={
-                              'Content-Type': config.get('contentType', 'application/json')})
-    except requests.exceptions.RequestException:
+        try:
+            loop_stock_result = []
+            for series in selected_series:
+                loop_stock_result += fetch_stock_information(
+                    series, store_information[series], selected_products)
+            for info in loop_stock_result:
+                notifyMethod = config.get('webHookUrl')
+                if notifyMethod == 'CLI' or notifyMethod == 'cli' or not notifyMethod:
+                    noticeContent = config.get('webHookFormat', '')
+                    noticeContent = normalize_anything(noticeContent, info)
+                    print(noticeContent)
+                else:
+                    noticeContent = normalize_anything(
+                        config.get('webHookFormat'), info)
+                    if type(noticeContent) is not str:
+                        noticeContent = json.dumps(noticeContent)
+                    requests.post(notifyMethod, noticeContent, headers={
+                                'Content-Type': config.get('contentType', 'application/json')})
+        except KeyboardInterrupt:
+            exit(0)
+    except Exception:
         pass
     sleep(config.get('queryInterval', 10))
