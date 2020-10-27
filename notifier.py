@@ -75,11 +75,11 @@ def normalize_list(l: list, info: dict) -> list:
 
 
 def normalize_anything(o, info: dict):
-    if o is str:
+    if type(o) is str:
         return normalize_str(o, info)
-    if o is dict:
+    if type(o) is dict:
         return normalize_dict(o, info)
-    if o is list:
+    if type(o) is list:
         return normalize_list(o, info)
     return o
 
