@@ -43,6 +43,8 @@ def fetch_stock_information(series: str, stores: dict, products: list) -> list:
 
 def normalize_str(noticeContent: str, info: dict) -> str:
     noticeContent = re.sub(
+        r'\{\{\s*reserveUrl\s*\}\}', f'https://reserve-prime.apple.com/{config.get("country","CN")}/{config.get("language","zh_CN")}/reserve/{series}/availability?'+r'store={{ storeNumber }}&iUP=N&appleCare=N&rv=0&partNumber={{ productSeries }}', noticeContent)
+    noticeContent = re.sub(
         r'\{\{\s*productName\s*\}\}', info['product']['description'], noticeContent)
     noticeContent = re.sub(
         r'\{\{\s*productSeries\s*\}\}', info['product']['partNumber'], noticeContent)
@@ -58,8 +60,6 @@ def normalize_str(noticeContent: str, info: dict) -> str:
         r'\{\{\s*storeNumber\s*\}\}', info['store']['storeNumber'], noticeContent)
     noticeContent = re.sub(
         r'\{\{\s*storeName\s*\}\}', info['store']['storeName'], noticeContent)
-    noticeContent = re.sub(
-        r'\{\{\s*reserveUrl\s*\}\}', f'https://reserve-prime.apple.com/{config.get("country","CN")}/{config.get("language","zh_CN")}/reserve/{series}/availability', noticeContent)
     return noticeContent
 
 
