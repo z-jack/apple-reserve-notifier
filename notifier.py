@@ -1,4 +1,5 @@
 from copy import deepcopy
+from urllib.parse import quote
 from time import sleep
 import requests
 import inquirer
@@ -42,6 +43,8 @@ def fetch_stock_information(series: str, stores: dict, products: list) -> list:
 
 
 def normalize_str(noticeContent: str, info: dict) -> str:
+    noticeContent = re.sub(
+        r'\{\{\s*reserve(\d+)Url\s*\}\}', f'https://reserve-prime.apple.com/{config.get("country","CN")}/{config.get("language","zh_CN")}/reserve/{series}?color={quote(info["product"]["color"])}'+r'&capacity={{ productCapacity }}&quantity=\1&anchor-store={{ storeNumber }}&store={{ storeNumber }}&partNumber={{ productSeries }}&channel=&sourceID=&iUID=&iuToken=&iUP=N&appleCare=&rv=&path=&plan=unlocked', noticeContent)
     noticeContent = re.sub(
         r'\{\{\s*reserveUrl\s*\}\}', f'https://reserve-prime.apple.com/{config.get("country","CN")}/{config.get("language","zh_CN")}/reserve/{series}/availability?'+r'store={{ storeNumber }}&iUP=N&appleCare=N&rv=0&partNumber={{ productSeries }}', noticeContent)
     noticeContent = re.sub(
